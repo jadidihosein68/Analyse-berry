@@ -87,16 +87,7 @@ export const NavigationItems: NavigationItem[] = [
         url: '/color',
         icon: 'ti ti-brush'
       },
-      {
-        id: 'tabler',
-        title: 'Tabler',
-        type: 'item',
-        classes: 'nav-item',
-        url: 'https://tabler-icons.io/',
-        icon: 'ti ti-plant-2',
-        target: true,
-        external: true
-      }
+      
     ]
   },
   {
