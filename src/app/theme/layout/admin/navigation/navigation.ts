@@ -31,6 +31,7 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'ti ti-dashboard',
         breadcrumbs: false
       }
+      
     ]
   },
   {
@@ -116,4 +117,58 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   }
+
+
+  ,
+  {
+    id: 'data-extraction',
+    title: 'Data Extraction',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'binance',
+        title: 'Binance Data',
+        type: 'item',
+        url: '/data-extraction',
+        classes: 'nav-item',
+        icon: 'ti ti-brand-binance'
+      }
+    ]
+  }
+  ,
+  {
+    id: 'model',
+    title: 'AI Models',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'generate-model',
+        title: 'Generate Model',
+        type: 'item',
+        url: '/generate-model',
+        classes: 'nav-item',
+        icon: 'ti ti-robot'
+      },
+    ]
+  },
+  {
+    id: 'backtesting',
+    title: 'Backtesting',
+    type: 'group',
+    icon: 'icon-navigation',
+    children: [
+      {
+        id: 'backtesting-playground',
+        title: 'Playground',
+        type: 'item',
+        url: '/backtesting-playground',
+        classes: 'nav-item',
+        icon: 'ti ti-chart-line'
+      },
+    ]
+  }
+
+
 ];
