@@ -121,16 +121,16 @@ export const NavigationItems: NavigationItem[] = [
 
   ,
   {
-    id: 'data-extraction',
+    id: 'dataextraction',
     title: 'Data Extraction',
     type: 'group',
     icon: 'icon-navigation',
     children: [
       {
-        id: 'binance',
+        id: 'binance-data',
         title: 'Binance Data',
         type: 'item',
-        url: '/data-extraction',
+        url: '/binance-data',
         classes: 'nav-item',
         icon: 'ti ti-brand-binance'
       }

@@ -28,6 +28,10 @@ const routes: Routes = [
       {
         path: 'sample-page',
         loadComponent: () => import('./demo/other/sample-page/sample-page.component')
+      },
+      {
+        path: 'binance-data',
+        loadComponent: () => import('./demo/dataextraction/binance-data/binance-data-component').then(m => m.BinanceDataComponent)
       }
     ]
   },
