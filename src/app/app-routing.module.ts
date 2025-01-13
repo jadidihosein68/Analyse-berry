@@ -31,7 +31,11 @@ const routes: Routes = [
       },
       {
         path: 'binance-data',
-        loadComponent: () => import('./demo/dataextraction/binance-data/binance-data-component').then(m => m.BinanceDataComponent)
+        loadComponent: () => import('./demo/dataextraction/binance-data/binance-data.component').then(m => m.BinanceDataComponent)
+      },
+      {
+        path: 'model-dashboard',
+        loadComponent: () => import('./demo/aimodel/model-dashboard/model-dashboard.component').then(m => m.ModelDashboardComponent)
       }
     ]
   },

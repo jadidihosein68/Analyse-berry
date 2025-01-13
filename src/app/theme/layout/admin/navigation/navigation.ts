@@ -147,7 +147,7 @@ export const NavigationItems: NavigationItem[] = [
         id: 'generate-model',
         title: 'Generate Model',
         type: 'item',
-        url: '/generate-model',
+        url: '/model-dashboard',
         classes: 'nav-item',
         icon: 'ti ti-robot'
       },
