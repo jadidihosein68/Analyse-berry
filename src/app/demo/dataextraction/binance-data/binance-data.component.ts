@@ -50,8 +50,25 @@ export class BinanceDataComponent implements OnInit {
 
   confirmAction(modal: any): void {
     modal.close('Confirmed');
-    this.fetchOhlcvData(); // Proceed to fetch data
+  
+    // Construct the API URL dynamically with symbol, interval, and limit
+    const fetchUrl = `${environment.apiBaseUrl}/api/fetch_ohlcv?symbol=${this.selectedSymbol}&interval=${this.interval}m&limit=${this.limit}`;
+  
+    // Call the fetch_ohlcv API
+    this.http.get<any>(fetchUrl).subscribe(
+      (fetchResponse) => {
+        console.log('Data fetched successfully:', fetchResponse);
+  
+        // Call get_latest_ohlcv to update the table
+        this.fetchOhlcvData();
+      },
+      (error) => {
+        console.error('Error fetching OHLCV data:', error);
+        alert('Failed to fetch OHLCV data. Please try again.');
+      }
+    );
   }
+  
 
 
   /**
