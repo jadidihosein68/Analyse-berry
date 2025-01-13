@@ -40,6 +40,13 @@ const routes: Routes = [
       {
         path: 'model-dashboard/select-date',
         loadComponent: () => import('./demo/aimodel/model-data-range/model-data-range.component').then((m) => m.ModelDataRangeComponent)
+      },
+      {
+        path: 'model-dashboard/feature-selection',
+        loadComponent: () =>
+          import('./demo/aimodel/feature-selection/feature-selection.component').then(
+            (m) => m.FeatureSelectionComponent
+          )
       }
     ]
   },

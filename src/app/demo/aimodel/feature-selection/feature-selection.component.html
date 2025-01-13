@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-sm-12">
+        <app-card cardTitle="Feature Selection">
+            <div class="feature-selection-container">
+
+
+                <!-- Feature Toggles -->
+                <div class="row">
+                    <div class="col-md-6 mb-3" *ngFor="let feature of features">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" [id]="feature.name"
+                                [(ngModel)]="feature.selected" (change)="toggleFeature(feature)" />
+                            <label class="form-check-label" [for]="feature.name">{{ feature.name }}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="row mt-4">
+                    <div class="col-12 d-flex justify-content-end">
+                        <button class="btn btn-secondary me-2" (click)="logSelectedFeatures()">Save as Draft</button>
+                        <button class="btn btn-success" (click)="logSelectedFeatures()">Next</button>
+                    </div>
+                </div>
+            </div>
+
+        </app-card>
+    </div>
+</div>
