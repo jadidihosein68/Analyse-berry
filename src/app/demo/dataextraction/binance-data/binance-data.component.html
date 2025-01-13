@@ -16,7 +16,7 @@
         </div>
 
         <!-- Symbol, Interval, and Limit Row -->
-        <form (submit)="onSubmit()" class="mb-4">
+        <form class="mb-4">
           <div class="row g-3 mb-3">
             <div class="col-md-4">
               <div class="form-group">
@@ -65,10 +65,30 @@
           <!-- Fetch Data Button -->
           <div class="row mb-4">
             <div class="col-md-12 text-end">
-              <button type="submit" class="btn btn-primary">Fetch Data</button>
+              <button type="button" class="btn btn-primary" (click)="openModal(modalContent)">Fetch Data</button>
             </div>
           </div>
         </form>
+
+        <!-- Modal Template -->
+        <ng-template #modalContent let-modal>
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Action</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to fetch data with the following details?</p>
+            <ul>
+              <li><strong>Symbol:</strong> {{ selectedSymbol }}</li>
+              <li><strong>Interval:</strong> {{ interval }} minutes</li>
+              <li><strong>Limit:</strong> {{ limit }}</li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel')">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="confirmAction(modal)">Confirm</button>
+          </div>
+        </ng-template>
 
         <!-- Table Section -->
         <div class="table-responsive">

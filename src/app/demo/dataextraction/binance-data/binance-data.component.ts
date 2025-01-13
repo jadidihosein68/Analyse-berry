@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { CardComponent } from '../../../theme/shared/components/card/card.component';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { environment } from 'src/environments/environment'; 
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-binance-data',
@@ -24,7 +25,7 @@ export class BinanceDataComponent implements OnInit {
   latestRecordEpochTime: number | null = null;
   delta: string = ''; // Delta between times
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,  private modalService: NgbModal) {}
 
   ngOnInit(): void {
     this.fetchOhlcvData();
@@ -35,6 +36,23 @@ export class BinanceDataComponent implements OnInit {
       this.calculateDelta();
     }, 1000);
   }
+
+  openModal(content: TemplateRef<any>): void {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        console.log(`Modal closed with: ${result}`);
+      },
+      (reason) => {
+        console.log(`Modal dismissed with: ${reason}`);
+      }
+    );
+  }
+
+  confirmAction(modal: any): void {
+    modal.close('Confirmed');
+    this.fetchOhlcvData(); // Proceed to fetch data
+  }
+
 
   /**
    * Fetch OHLCV data from the API.
