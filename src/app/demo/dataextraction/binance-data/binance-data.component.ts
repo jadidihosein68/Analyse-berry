@@ -52,7 +52,7 @@ export class BinanceDataComponent implements OnInit {
     modal.close('Confirmed');
   
     // Construct the API URL dynamically with symbol, interval, and limit
-    const fetchUrl = `${environment.apiBaseUrl}/api/fetch_ohlcv?symbol=${this.selectedSymbol}&interval=${this.interval}m&limit=${this.limit}`;
+    const fetchUrl = `${environment.apiBaseUrl}/api/fetch_and_store_ohlcv?symbol=${this.selectedSymbol}&interval=${this.interval}m&limit=${this.limit}`;
   
     // Call the fetch_ohlcv API
     this.http.get<any>(fetchUrl).subscribe(
