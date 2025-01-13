@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-model-dashboard',
@@ -37,7 +38,7 @@ export class ModelDashboardComponent implements OnInit {
     }
   ];
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -45,4 +46,9 @@ export class ModelDashboardComponent implements OnInit {
   onTrainNewModel(): void {
     console.log('Train New Model button clicked');
   }
+
+  navigateToSelectDate(): void {
+    this.router.navigate(['/model-dashboard/select-date']);
+  }
+
 }
