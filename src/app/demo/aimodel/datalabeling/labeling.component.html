@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="Labeling">
+        <!-- Strategy Selection -->
+        <div class="row mb-3" *ngFor="let strategy of strategies">
+          <div class="col-12">
+            <div class="d-flex align-items-center">
+              <!-- Radio Button -->
+              <div class="form-check me-3">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  [id]="strategy.name"
+                  name="strategy"
+                  [value]="strategy.name"
+                  [(ngModel)]="selectedStrategy"
+                />
+              </div>
+              <!-- Strategy Card -->
+              <div class="card flex-grow-1">
+                <div class="card-body">
+                  <h5 class="card-title mb-2">{{ strategy.name }}</h5>
+                  <p class="card-text mb-0">{{ strategy.explanation }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Buttons -->
+        <div class="row mt-4">
+          <div class="col-12 d-flex justify-content-end">
+            <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>
+            <button class="btn btn-success" (click)="createModel()">Create Model</button>
+          </div>
+        </div>
+      </app-card>
+    </div>
+  </div>
+  

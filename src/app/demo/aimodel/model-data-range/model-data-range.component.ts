@@ -90,7 +90,7 @@ export class ModelDataRangeComponent {
    * Navigate to the next step.
    */
   goNext(): void {
-    this.router.navigate(['/next-step']); // Replace with your next step route
+    this.router.navigate(['/model-dashboard/feature-selection']); // Replace with your next step route
   }
 
 

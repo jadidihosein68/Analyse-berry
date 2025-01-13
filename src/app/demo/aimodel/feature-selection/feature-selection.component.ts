@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-feature-selection',
   imports: [CommonModule, SharedModule],
@@ -22,6 +23,8 @@ export class FeatureSelectionComponent {
     { name: 'Percentage Price Oscillator (PPO)', selected: false }
   ];
 
+  constructor(private router: Router) {}
+
   /**
    * Toggle the selection of a feature.
    * @param feature - The feature object to toggle
@@ -39,5 +42,13 @@ export class FeatureSelectionComponent {
       .map(feature => feature.name);
     console.log('Selected Features:', selectedFeatures);
     alert(`Selected Features: ${selectedFeatures.join(', ')}`);
+  }
+
+  goBack(): void {
+    this.router.navigate(['/model-dashboard/select-date']);
+  }
+
+  goNext(): void {
+    this.router.navigate(['/model-dashboard/labeling']); // Replace with your next step route
   }
 }
