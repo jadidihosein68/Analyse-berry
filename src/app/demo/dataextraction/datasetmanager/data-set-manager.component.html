@@ -1,55 +1,59 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Data Set Manager">
-     
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Data Set Manager</h2>
+        <button class="btn btn-primary" (click)="addDataSet()">
+          <i class="ti ti-pencil me-2"></i> Add Data Set
+        </button>
+      </div>
 
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-dark">
+            <tr>
+              <th>Data Set Name</th>
+              <th>Symbol</th>
+              <th>Start Date (Epoch)</th>
+              <th>End Date (Epoch)</th>
+              <th>Total Records</th>
+              <th>Data Set Type</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of dataSets">
+              <td>{{ data.name }}</td>
+              <td>{{ data.symbol }}</td>
+              <td>
+                <span [title]="formatDate(data.startDate)">{{ data.startDate }}</span>
+              </td>
+              <td>
+                <span [title]="formatDate(data.endDate)">{{ data.endDate }}</span>
+              </td>
+              <td>{{ data.totalRecords }}</td>
+              <td>{{ data.type }}</td>
+              <td>
+                <!-- Info Button -->
+                <button 
+                  class="btn btn-info btn-sm me-2" 
+                  (click)="goToDetails(data.name)" 
+                  title="Go to Data Set Details">
+                  <i class="ti ti-info-square"></i>
+                </button>
 
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h2>Data Set Manager</h2>
-          <button class="btn btn-primary" (click)="addDataSet()">
-            <i class="ti ti-pencil me-2"></i> Add Data Set
-          </button>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table table-striped table-hover">
-            <thead class="table-dark">
-              <tr>
-                <th>Data Set Name</th>
-                <th>Symbol</th>
-                <th>Start Date (Epoch)</th>
-                <th>End Date (Epoch)</th>
-                <th>Total Records</th>
-                <th>Data Set Type</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let data of dataSets">
-                <td>{{ data.name }}</td>
-                <td>{{ data.symbol }}</td>
-                <td>
-                  <span [title]="formatDate(data.startDate)">{{ data.startDate }}</span>
-                </td>
-                <td>
-                  <span [title]="formatDate(data.endDate)">{{ data.endDate }}</span>
-                </td>
-                <td>{{ data.totalRecords }}</td>
-                <td>{{ data.type }}</td>
-                <td>
-                  <button class="btn btn-info btn-sm" (click)="goToDetails(data.name)" title="Go to Data Set Details">
-                    <i class="ti ti-info-square"></i> 
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-
-
-      </app-card>
-    </div>
+                <!-- Export Button -->
+                <button 
+                  class="btn btn-secondary btn-sm" 
+                  (click)="exportData(data.name)" 
+                  title="Export Data">
+                  <i class="ti ti-download"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
   </div>
-  
+</div>

@@ -37,6 +37,14 @@ const routes: Routes = [
         path: 'data-set-manager',
         loadComponent: () => import('./demo/dataextraction/datasetmanager/data-set-manager.component').then(m => m.DataSetManagerComponent)
       },
+
+
+      {
+        path: 'data-set-manager/add-data-set',
+        loadComponent: () => import('./demo/dataextraction/datasetmanager/adddataset/add-dataset.component').then(m => m.AddDatasetComponent)
+      },
+
+
       {
         path: 'model-dashboard',
         loadComponent: () => import('./demo/aimodel/model-dashboard/model-dashboard.component').then(m => m.ModelDashboardComponent)

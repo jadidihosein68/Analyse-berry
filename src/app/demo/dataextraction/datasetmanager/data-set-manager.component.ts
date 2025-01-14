@@ -47,6 +47,9 @@ export class DataSetManagerComponent {
 
   // Add new data set (navigate to a new component or open a modal)
   addDataSet(): void {
-    this.router.navigate(['/add-data-set']);
+    this.router.navigate(['/data-set-manager/add-data-set']);
+  }
+
+  exportData(data:any):void{
   }
 }
