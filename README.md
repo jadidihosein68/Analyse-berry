@@ -130,3 +130,21 @@ To report a bug, please submit an [issue](https://github.com/codedthemes/berry-f
 - [Dribbble](https://dribbble.com/codedthemes)
 - [Facebook](https://www.facebook.com/codedthemes)
 - [Twitter](https://twitter.com/codedthemes)
+
+
+
+
+font location 
+https://berrydashboard.io/bootstrap/default/elements/icon-tabler.html
+
+
+
+
+I want to create a new component, 
+
+the name is bucket-data-dashboard.component.ts  
+
+This component must have : 
+first row : name of data set  and a filed call symbol, the symbol must be a dropdown 
+second row : 
+Start date  and End date both should be based on epoch time and we should have a smalltext beneth it that show date 
