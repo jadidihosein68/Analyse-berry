@@ -133,7 +133,16 @@ export const NavigationItems: NavigationItem[] = [
         url: '/binance-data',
         classes: 'nav-item',
         icon: 'ti ti-brand-binance'
+      },
+      {
+        id: 'data-set-manager',
+        title: 'Data Set Manager',
+        type: 'item',
+        url: '/data-set-manager',
+        classes: 'nav-item',
+        icon: 'ti ti-brand-binance'
       }
+
     ]
   }
   ,

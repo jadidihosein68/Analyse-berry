@@ -34,6 +34,10 @@ const routes: Routes = [
         loadComponent: () => import('./demo/dataextraction/binance-data/binance-data.component').then(m => m.BinanceDataComponent)
       },
       {
+        path: 'data-set-manager',
+        loadComponent: () => import('./demo/dataextraction/datasetmanager/data-set-manager.component').then(m => m.DataSetManagerComponent)
+      },
+      {
         path: 'model-dashboard',
         loadComponent: () => import('./demo/aimodel/model-dashboard/model-dashboard.component').then(m => m.ModelDashboardComponent)
       },
