@@ -61,6 +61,13 @@ const routes: Routes = [
           )
       },
       {
+        path: 'model-dashboard/model-config',
+        loadComponent: () =>
+          import('./demo/aimodel/model-config/model-config.component').then(
+            (m) => m.ModelConfigComponent
+          )
+      },
+      {
         path: 'model-dashboard/labeling',
         loadComponent: () =>
           import('./demo/aimodel/datalabeling/labeling.component').then((m) => m.LabelingComponent)

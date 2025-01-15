@@ -48,7 +48,7 @@ export class ModelDashboardComponent implements OnInit {
   }
 
   navigateToSelectDate(): void {
-    this.router.navigate(['/model-dashboard/feature-selection']);
+    this.router.navigate(['/model-dashboard/model-config']);
   }
 
 }
