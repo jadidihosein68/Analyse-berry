@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   selector: 'app-model-config',
   imports: [CommonModule, SharedModule],
   templateUrl: './model-config.component.html',
-  styleUrls: ['./model-config.component.scss'],
+  styleUrls: ['./model-config.component.scss']
 })
 export class ModelConfigComponent {
   // Model Info
@@ -22,60 +22,81 @@ export class ModelConfigComponent {
 
   // Features with toggle and parameters
   features = [
-    {
-      name: 'RSI',
-      selected: false,
-      parameters: { timeperiod: 14 },
+    { 
+      name: 'RSI', 
+      selected: false, 
+      parameters: { timeperiod: 14 } 
     },
-    {
-      name: 'MACD',
-      selected: false,
-      parameters: { fastperiod: 12, slowperiod: 26, signalperiod: 9 },
+    { 
+      name: 'MACD', 
+      selected: false, 
+      parameters: { fastperiod: 12, slowperiod: 26, signalperiod: 9 } 
     },
-    {
-      name: 'Simple Moving Average (SMA)',
-      selected: false,
-      parameters: { window: 10 },
+    { 
+      name: 'Simple Moving Average (SMA)', 
+      selected: false, 
+      parameters: { window: 10 } 
     },
-    {
-      name: 'Exponential Moving Average (EMA)',
-      selected: false,
-      parameters: { span: 10 },
+    { 
+      name: 'Exponential Moving Average (EMA)', 
+      selected: false, 
+      parameters: { span: 10 } 
     },
-    {
-      name: 'Average True Range (ATR)',
-      selected: false,
-      parameters: { timeperiod: 14 },
+    { 
+      name: 'Average True Range (ATR)', 
+      selected: false, 
+      parameters: { timeperiod: 14 } 
     },
-    {
-      name: 'Stochastic Oscillator',
-      selected: false,
-      parameters: {
-        fastk_period: 5,
-        slowk_period: 3,
-        slowk_matype: 0,
-        slowd_period: 3,
-        slowd_matype: 0,
-      },
+    { 
+      name: 'Stochastic Oscillator', 
+      selected: false, 
+      parameters: { fastk_period: 5, slowk_period: 3, slowk_matype: 0, slowd_period: 3, slowd_matype: 0 } 
     },
-    {
-      name: 'Bollinger Band',
-      selected: false,
-      parameters: { timeperiod: 20, nbdevup: 2, nbdevdn: 2, matype: 0 },
+    { 
+      name: 'Bollinger Band', 
+      selected: false, 
+      parameters: { timeperiod: 20, nbdevup: 2, nbdevdn: 2, matype: 0 } 
     },
-    {
-      name: 'Lag Features',
-      selected: false,
-      parameters: { lag_period: 5 },
+    { 
+      name: 'Lag Features', 
+      selected: false, 
+      parameters: { lag_period: 5 } 
     },
-    {
-      name: 'Percentage Price Oscillator (PPO)',
-      selected: false,
-      parameters: { fastperiod: 12, slowperiod: 26, matype: 0 },
-    },
+    { 
+      name: 'Percentage Price Oscillator (PPO)', 
+      selected: false, 
+      parameters: { fastperiod: 12, slowperiod: 26, matype: 0 } 
+    }
   ];
 
+  // Explanations for parameters
+  parameterInfo = {
+    timeperiod: 'The number of periods to consider for the calculation.',
+    fastperiod: 'The fast moving average period.',
+    slowperiod: 'The slow moving average period.',
+    signalperiod: 'The signal line period.',
+    window: 'The rolling window size for calculation.',
+    span: 'The span for the exponential moving average.',
+    fastk_period: 'The number of periods for the %K line.',
+    slowk_period: 'The number of periods for the slow %K line.',
+    slowk_matype: 'The moving average type for the slow %K line.',
+    slowd_period: 'The number of periods for the %D line.',
+    slowd_matype: 'The moving average type for the %D line.',
+    nbdevup: 'Number of standard deviations above the mean.',
+    nbdevdn: 'Number of standard deviations below the mean.',
+    matype: 'The moving average type.',
+    lag_period: 'The lag period for the lag features.'
+  };
+
   constructor(private router: Router) {}
+
+  /**
+   * Get parameter explanation.
+   * @param paramKey - Parameter key
+   */
+  getParameterInfo(paramKey: string): string {
+    return this.parameterInfo[paramKey] || 'No information available.';
+  }
 
   goBack(): void {
     this.router.navigate(['/model-dashboard']);

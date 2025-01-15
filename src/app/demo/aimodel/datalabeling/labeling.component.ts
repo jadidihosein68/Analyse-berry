@@ -39,6 +39,6 @@ export class LabelingComponent {
    * Navigate back to the previous page.
    */
   goBack(): void {
-    this.router.navigate(['/model-dashboard/feature-selection']);
+    this.router.navigate(['/model-dashboard/model-config']);
   }
 }

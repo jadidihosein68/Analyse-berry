@@ -2,7 +2,7 @@
     <div class="col-sm-12">
       <app-card cardTitle="Model Config">
         <div class="model-config-container">
-  
+          
           <!-- Model Info Section -->
           <div class="mb-4">
             <h4>Model Info</h4>
@@ -57,10 +57,9 @@
               </div>
   
               <!-- Parameters Section -->
-              <div class="col-md-12 mt-2" *ngIf="feature.selected && feature.parameters">
+              <div class="col-md-12 mt-3" *ngIf="feature.selected && feature.parameters">
                 <div class="row">
-                  <!-- Place parameters in three columns -->
-                  <div class="col-md-4 mb-2" *ngFor="let param of (feature.parameters | keyvalue)">
+                  <div class="col-md-4 mb-3" *ngFor="let param of (feature.parameters | keyvalue)">
                     <label [for]="feature.name + param.key" class="form-label">{{ param.key }}</label>
                     <input
                       type="number"
@@ -69,6 +68,9 @@
                       [(ngModel)]="feature.parameters[param.key]"
                       placeholder="Enter {{ param.key }}"
                     />
+                    <small class="text-muted">
+                      {{ getParameterInfo(param.key) }}
+                    </small>
                   </div>
                 </div>
               </div>
