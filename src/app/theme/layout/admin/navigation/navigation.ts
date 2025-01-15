@@ -34,6 +34,8 @@ export const NavigationItems: NavigationItem[] = [
       
     ]
   },
+  
+  /*
   {
     id: 'page',
     title: 'Pages',
@@ -66,6 +68,8 @@ export const NavigationItems: NavigationItem[] = [
       }
     ]
   },
+
+
   {
     id: 'elements',
     title: 'Elements',
@@ -116,10 +120,10 @@ export const NavigationItems: NavigationItem[] = [
         external: true
       }
     ]
-  }
+  },
 
-
-  ,
+*/
+  
   {
     id: 'dataextraction',
     title: 'Data Extraction',
@@ -128,7 +132,7 @@ export const NavigationItems: NavigationItem[] = [
     children: [
       {
         id: 'binance-data',
-        title: 'Binance Data',
+        title: 'OHLCV Data',
         type: 'item',
         url: '/binance-data',
         classes: 'nav-item',
