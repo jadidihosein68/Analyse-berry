@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { CardComponent } from '../../../theme/shared/components/card/card.component';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { environment } from 'src/environments/environment'; 
+
 
 @Component({
   selector: 'app-data-set-manager',
@@ -15,7 +17,7 @@ import { SharedModule } from 'src/app/theme/shared/shared.module';
 })
 export class DataSetManagerComponent implements OnInit {
   dataSets: any[] = []; // Data for the table
-  apiUrl: string = 'http://127.0.0.1:5000/api/data_collections'; // API URL
+  apiUrl: string = `${environment.apiBaseUrl}/api/data_collections`; // API URL
 
   constructor(private router: Router, private http: HttpClient) {}
 

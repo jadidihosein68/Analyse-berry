@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment'; 
 
 @Component({
   selector: 'app-add-dataset',
@@ -24,13 +25,13 @@ export class AddDatasetComponent {
   dataSetType: string = 'Training'; // Default value
   totalRecords: number | null = null;
 
-  private baseUrl: string = 'http://127.0.0.1:5000/api';
+  private baseUrl: string = `${environment.apiBaseUrl}/api`;
 
   constructor(private http: HttpClient, private router: Router) {}
 
   // Convert epoch to readable date
   toReadableDate(epoch: number | null): string {
-    return epoch ? new Date(epoch * 1000).toLocaleString() : 'N/A';
+    return epoch ? new Date(epoch ).toLocaleString() : 'N/A';
   }
 
   // Submit dataset with validation and confirmation
