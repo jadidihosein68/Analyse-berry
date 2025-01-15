@@ -45,7 +45,7 @@ export class FeatureSelectionComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/model-dashboard/select-date']);
+    this.router.navigate(['/model-dashboard']);
   }
 
   goNext(): void {
