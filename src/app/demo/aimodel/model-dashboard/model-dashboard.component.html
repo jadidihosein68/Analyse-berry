@@ -26,6 +26,7 @@
                 <th>Data Set Used for Training</th>
                 <th>Accuracy</th>
                 <th>Remarks</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -34,8 +35,25 @@
                 <td>{{ model.type }}</td>
                 <td>{{ model.dateCreated }}</td>
                 <td>{{ model.dataSet }}</td>
-                <td>{{ model.accuracy }}</td>
+                <td>{{ model.accuracy ? model.accuracy + '%' : 'TBD' }}</td>
                 <td>{{ model.remarks }}</td>
+                 <td>
+                <!-- Info Button -->
+                <button 
+                  class="btn btn-info btn-sm me-2" 
+                  (click)="viewModel(model)" 
+                  title="Model Info">
+                  <i class="ti ti-info-square"></i>
+                </button>
+
+                <!-- Export Button -->
+                <button 
+                  class="btn btn-secondary btn-sm" 
+                  (click)="editModel(model)" 
+                  title="Edit Data">
+                  <i class="ti ti-edit"></i>
+                </button>
+              </td>
               </tr>
             </tbody>
           </table>

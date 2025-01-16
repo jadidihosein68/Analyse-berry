@@ -44,7 +44,7 @@ export class ModelDashboardComponent implements OnInit {
           type: item.model_type,
           dateCreated: item.date_of_creation,
           dataSet: item.training_dataset_name,
-          accuracy: item.accuracy_percent + '%',
+          accuracy: item.accuracy_percent,
           remarks: item.remark
         }));
       },
@@ -60,4 +60,12 @@ export class ModelDashboardComponent implements OnInit {
     // This triggers the 'Train New Model' flow
     this.router.navigate(['/model-dashboard/model-config']);
   }
+
+
+  viewModel(model){
+
+  }
+
+  editModel(model){}
+
 }
