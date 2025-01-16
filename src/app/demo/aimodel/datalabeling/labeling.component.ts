@@ -31,8 +31,8 @@ export class LabelingComponent {
   /**
    * Create the model with the selected strategy.
    */
-  createModel(): void {
-    alert(`Model created using the "${this.selectedStrategy}" strategy.`);
+  goNext(): void {
+    this.router.navigate(['/model-dashboard/model-selection']);
   }
 
   /**

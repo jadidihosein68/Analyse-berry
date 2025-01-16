@@ -2,53 +2,62 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment'; 
+import { HttpClientModule } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-model-dashboard',
-  imports: [CommonModule, SharedModule],
+  standalone: true,
+  imports: [CommonModule, SharedModule, HttpClientModule],
   templateUrl: './model-dashboard.component.html',
   styleUrls: ['./model-dashboard.component.scss']
 })
 export class ModelDashboardComponent implements OnInit {
-  // Sample data for the model table
-  models = [
-    {
-      name: 'Model A',
-      type: 'Random Forest',
-      dateCreated: '2025-01-10',
-      dataSet: 'OHLCV - BTCUSDT',
-      accuracy: '92%',
-      remarks: 'Highly accurate'
-    },
-    {
-      name: 'Model B',
-      type: 'XGBoost',
-      dateCreated: '2025-01-11',
-      dataSet: 'OHLCV - ETHUSDT',
-      accuracy: '89%',
-      remarks: 'Good performance'
-    },
-    {
-      name: 'Model C',
-      type: 'Neural Network',
-      dateCreated: '2025-01-12',
-      dataSet: 'OHLCV - LTCUSDT',
-      accuracy: '87%',
-      remarks: 'Requires fine-tuning'
-    }
-  ];
+  models: any[] = [];
 
-  constructor(private router: Router) {}
+  private apiUrl = `${environment.apiBaseUrl}/api/model_config`; // Endpoint
 
-  ngOnInit(): void {}
+  constructor(private router: Router, private http: HttpClient) {}
 
-  // Placeholder function for training a new model
-  onTrainNewModel(): void {
-    console.log('Train New Model button clicked');
+  ngOnInit(): void {
+    this.loadModels();
   }
 
+  /**
+   * Fetch all model configurations from the API
+   */
+  loadModels(): void {
+    this.http.get<any[]>(this.apiUrl).subscribe(
+      (response) => {
+        // Map the API response to match table fields
+        // The table displays:
+        //   - name => model_name
+        //   - type => model_type
+        //   - dateCreated => date_of_creation
+        //   - dataSet => training_dataset_name
+        //   - accuracy => accuracy_percent
+        //   - remarks => remark
+        this.models = response.map((item) => ({
+          name: item.model_name,
+          type: item.model_type,
+          dateCreated: item.date_of_creation,
+          dataSet: item.training_dataset_name,
+          accuracy: item.accuracy_percent + '%',
+          remarks: item.remark
+        }));
+      },
+      (error) => {
+        console.error('Error fetching model configs:', error);
+        alert('Failed to load models from the server.');
+      }
+    );
+  }
+
+  // Navigate to the "Select Data" or "Model Config" page
   navigateToSelectDate(): void {
+    // This triggers the 'Train New Model' flow
     this.router.navigate(['/model-dashboard/model-config']);
   }
-
 }
