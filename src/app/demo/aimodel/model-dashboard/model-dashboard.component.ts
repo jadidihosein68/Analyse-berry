@@ -40,6 +40,7 @@ export class ModelDashboardComponent implements OnInit {
         //   - accuracy => accuracy_percent
         //   - remarks => remark
         this.models = response.map((item) => ({
+          id: item.id,
           name: item.model_name,
           type: item.model_type,
           dateCreated: item.date_of_creation,
@@ -66,6 +67,10 @@ export class ModelDashboardComponent implements OnInit {
 
   }
 
-  editModel(model){}
+  editModel(modelId: number){
+
+    this.router.navigate(['/model-dashboard/model-config', { id: modelId }]);
+
+  }
 
 }
