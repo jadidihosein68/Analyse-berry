@@ -73,7 +73,7 @@ const routes: Routes = [
           import('./demo/aimodel/datalabeling/labeling.component').then((m) => m.LabelingComponent)
       },
       {
-        path: 'model-dashboard/model-selection',
+        path: 'model-dashboard/model-selection/:id',
         loadComponent: () =>
           import('./demo/aimodel/model-selection/model-selection.component').then((m) => m.ModelSelectionComponent)
       }
