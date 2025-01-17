@@ -187,8 +187,8 @@ export class ModelConfigComponent implements OnInit {
 
     httpMethod.call(this.http, apiUrl, payload).subscribe(
       () => {
-        alert(this.isEditMode ? 'Model updated successfully!' : 'Model created successfully!');
-        this.router.navigate(['/model-dashboard']);
+       // alert(this.isEditMode ? 'Model updated successfully!' : 'Model created successfully!');
+       this.router.navigate(['/model-dashboard/labeling', this.modelId]);
       },
       (error) => {
         console.error('Error submitting model:', error);

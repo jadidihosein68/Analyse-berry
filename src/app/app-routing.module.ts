@@ -68,7 +68,7 @@ const routes: Routes = [
           )
       },
       {
-        path: 'model-dashboard/labeling',
+        path: 'model-dashboard/labeling/:id',
         loadComponent: () =>
           import('./demo/aimodel/datalabeling/labeling.component').then((m) => m.LabelingComponent)
       },
