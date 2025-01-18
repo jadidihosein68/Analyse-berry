@@ -82,7 +82,7 @@ export const FEATURES = [
         {
           name: 'criterion',
           type: 'str',
-          defaultValue: '"gini"',
+          defaultValue: 'gini',
           mandatory: 'No',
           description: 'Function to measure split quality: "gini", "entropy", "log_loss".',
           userValue: ''
@@ -122,7 +122,7 @@ export const FEATURES = [
         {
           name: 'max_features',
           type: 'str, int, or float',
-          defaultValue: '"sqrt"',
+          defaultValue: 'sqrt',
           mandatory: 'No',
           description: 'Number of features to consider for the best split.',
           userValue: ''
@@ -176,7 +176,7 @@ export const FEATURES = [
         {
           name: 'penalty',
           type: 'str',
-          defaultValue: '"l2"',
+          defaultValue: 'l2',
           mandatory: 'No',
           description: 'Regularization type: "l1", "l2", "elasticnet", or "none".',
           userValue: ''
@@ -216,7 +216,7 @@ export const FEATURES = [
         {
           name: 'solver',
           type: 'str',
-          defaultValue: '"lbfgs"',
+          defaultValue: 'lbfgs',
           mandatory: 'Yes (if penalty="l1")',
           description: 'Optimization algorithm: "lbfgs", "liblinear", "saga".',
           userValue: ''
@@ -232,7 +232,7 @@ export const FEATURES = [
         {
           name: 'multi_class',
           type: 'str',
-          defaultValue: '"auto"',
+          defaultValue: 'auto',
           mandatory: 'No',
           description: 'Multi-class strategy: "auto", "ovr", "multinomial".',
           userValue: ''
@@ -262,7 +262,7 @@ export const FEATURES = [
         {
           name: 'kernel',
           type: 'str',
-          defaultValue: '"rbf"',
+          defaultValue: 'rbf',
           mandatory: 'No',
           description: 'Kernel type: "linear", "poly", "rbf", "sigmoid".',
           userValue: ''
@@ -278,7 +278,7 @@ export const FEATURES = [
         {
           name: 'gamma',
           type: 'str or float',
-          defaultValue: '"scale"',
+          defaultValue: 'scale',
           mandatory: 'No',
           description: 'Kernel coefficient: "scale", "auto", or manually set.',
           userValue: ''
@@ -380,7 +380,7 @@ export const FEATURES = [
         {
           name: 'objective',
           type: 'str',
-          defaultValue: '"binary:logistic"',
+          defaultValue: 'binary:logistic',
           mandatory: 'No',
           description: 'Learning task: "binary:logistic", "multi:softmax", etc.',
           userValue: ''

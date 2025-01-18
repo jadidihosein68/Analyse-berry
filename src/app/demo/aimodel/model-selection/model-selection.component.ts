@@ -11,7 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-model-selection',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule,HttpClientModule],
+  imports: [CommonModule, FormsModule, SharedModule, HttpClientModule],
   templateUrl: './model-selection.component.html',
   styleUrls: ['./model-selection.component.scss']
 })
@@ -42,7 +42,22 @@ export class ModelSelectionComponent implements OnInit {
     this.http.get<any>(apiUrl).subscribe(
       (data) => {
         this.currentModelConfig = data;
+
+        // Determine the selected model index
+        const method = data.model_config?.method || 'RandomForestClassifier';
+        this.selectedModelIndex = this.models.findIndex(
+          (model) => model.modelKey === method
+        );
+
+        // Default to "RandomForestClassifier" if no match found
+        if (this.selectedModelIndex === -1) {
+          this.selectedModelIndex = this.models.findIndex(
+            (model) => model.modelKey === 'RandomForestClassifier'
+          );
+        }
+
         console.log('Loaded model config:', this.currentModelConfig);
+        console.log('Auto-selected model index:', this.selectedModelIndex);
       },
       (error) => {
         console.error('Error loading model config:', error);

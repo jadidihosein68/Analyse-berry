@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { FEATURES } from 'src/app/constants/model-config.constants';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-model-config',
@@ -23,7 +24,11 @@ export class ModelConfigComponent implements OnInit {
   selectedTrainingData: string = '';
 
   // Features with toggle and parameters
-  features = FEATURES;
+  features = FEATURES.map((feature) => ({
+    ...feature,
+    selected: false,
+    parameters: { ...feature.parameters }, // Clone to avoid mutating the original object
+  }));
 
   // Parameter Explanations
   parameterInfo: { [key: string]: string } = {
@@ -47,18 +52,41 @@ export class ModelConfigComponent implements OnInit {
   isEditMode: boolean = false; // Determines if we're editing
   modelId: number | null = null; // ID for edit mode
 
-  constructor(private router: Router, private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef // For manual change detection
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       if (params['id']) {
         this.isEditMode = true;
         this.modelId = +params['id'];
+        this.resetState(); // Reset state before loading data
         this.loadModelData();
       }
     });
   }
 
+  /**
+   * Reset component state before loading new data
+   */
+  private resetState(): void {
+    this.modelName = '';
+    this.coinSymbol = '';
+    this.selectedTrainingData = '';
+    this.features = FEATURES.map((feature) => ({
+      ...feature,
+      selected: false,
+      parameters: { ...feature.parameters },
+    }));
+  }
+
+  /**
+   * Load model data from the API
+   */
   loadModelData(): void {
     const url = `${environment.apiBaseUrl}/api/model_config/${this.modelId}`;
     this.http.get<any>(url).subscribe(
@@ -66,6 +94,7 @@ export class ModelConfigComponent implements OnInit {
         this.modelName = data.model_name;
         this.coinSymbol = data.coin_symbol;
         this.selectedTrainingData = data.training_dataset_name;
+
         this.features.forEach((feature) => {
           const matchedFeature = data.features_config.indicators.find(
             (f: any) => f.name === feature.name
@@ -75,6 +104,9 @@ export class ModelConfigComponent implements OnInit {
             feature.parameters = { ...feature.parameters, ...matchedFeature.params };
           }
         });
+
+        // Force change detection to refresh UI
+        this.cdr.detectChanges();
       },
       (error) => {
         console.error('Error loading model data:', error);
@@ -134,26 +166,22 @@ export class ModelConfigComponent implements OnInit {
 
     const httpMethod = this.isEditMode ? this.http.put : this.http.post;
 
-   httpMethod.call(this.http, apiUrl, payload).subscribe(
-  (response: any) => {
-    // For creating a new record, retrieve the ID from the response
-    if (!this.isEditMode) {
-      this.modelId = response?.id; // Ensure your backend includes the generated ID in the response
-    }
+    httpMethod.call(this.http, apiUrl, payload).subscribe(
+      (response: any) => {
+        if (!this.isEditMode) {
+          this.modelId = response?.id; // Ensure backend includes generated ID
+        }
 
-
-    
-    // Navigate to the Labeling page with the model ID
-    if (this.modelId) {
-      this.router.navigate(['/model-dashboard/labeling', this.modelId]);
-    } else {
-      console.error('Model ID is missing. Navigation aborted.');
-    }
-  },
-  (error) => {
-    console.error('Error submitting model:', error);
-    alert('An error occurred while submitting the model.');
-  }
-);
+        if (this.modelId) {
+          this.router.navigate(['/model-dashboard/labeling', this.modelId]);
+        } else {
+          console.error('Model ID is missing. Navigation aborted.');
+        }
+      },
+      (error) => {
+        console.error('Error submitting model:', error);
+        alert('An error occurred while submitting the model.');
+      }
+    );
   }
 }
