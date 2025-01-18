@@ -31,18 +31,11 @@ export class ModelDashboardComponent implements OnInit {
   loadModels(): void {
     this.http.get<any[]>(this.apiUrl).subscribe(
       (response) => {
-        // Map the API response to match table fields
-        // The table displays:
-        //   - name => model_name
-        //   - type => model_type
-        //   - dateCreated => date_of_creation
-        //   - dataSet => training_dataset_name
-        //   - accuracy => accuracy_percent
-        //   - remarks => remark
+
         this.models = response.map((item) => ({
           id: item.id,
           name: item.model_name,
-          type: item.model_type,
+          type: item.model_config?.method|| 'TBD',
           dateCreated: item.date_of_creation,
           dataSet: item.training_dataset_name,
           accuracy: item.accuracy_percent,
