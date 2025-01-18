@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { FEATURES } from 'src/app/constants/model-config.constants';
 
 @Component({
   selector: 'app-model-config',
@@ -22,59 +23,7 @@ export class ModelConfigComponent implements OnInit {
   selectedTrainingData: string = '';
 
   // Features with toggle and parameters
-  features = [
-    {
-      name: 'RSI',
-      selected: false,
-      parameters: { timeperiod: 14 },
-    },
-    {
-      name: 'MACD',
-      selected: false,
-      parameters: { fastperiod: 12, slowperiod: 26, signalperiod: 9 },
-    },
-    {
-      name: 'Simple Moving Average (SMA)',
-      selected: false,
-      parameters: { window: 10 },
-    },
-    {
-      name: 'Exponential Moving Average (EMA)',
-      selected: false,
-      parameters: { span: 10 },
-    },
-    {
-      name: 'Average True Range (ATR)',
-      selected: false,
-      parameters: { timeperiod: 14 },
-    },
-    {
-      name: 'Stochastic Oscillator',
-      selected: false,
-      parameters: {
-        fastk_period: 5,
-        slowk_period: 3,
-        slowk_matype: 0,
-        slowd_period: 3,
-        slowd_matype: 0,
-      },
-    },
-    {
-      name: 'Bollinger Band',
-      selected: false,
-      parameters: { timeperiod: 20, nbdevup: 2, nbdevdn: 2, matype: 0 },
-    },
-    {
-      name: 'Lag Features',
-      selected: false,
-      parameters: { lag_period: 5 },
-    },
-    {
-      name: 'Percentage Price Oscillator (PPO)',
-      selected: false,
-      parameters: { fastperiod: 12, slowperiod: 26, matype: 0 },
-    },
-  ];
+  features = FEATURES;
 
   // Parameter Explanations
   parameterInfo: { [key: string]: string } = {
@@ -185,15 +134,26 @@ export class ModelConfigComponent implements OnInit {
 
     const httpMethod = this.isEditMode ? this.http.put : this.http.post;
 
-    httpMethod.call(this.http, apiUrl, payload).subscribe(
-      () => {
-       // alert(this.isEditMode ? 'Model updated successfully!' : 'Model created successfully!');
-       this.router.navigate(['/model-dashboard/labeling', this.modelId]);
-      },
-      (error) => {
-        console.error('Error submitting model:', error);
-        alert('An error occurred while submitting the model.');
-      }
-    );
+   httpMethod.call(this.http, apiUrl, payload).subscribe(
+  (response: any) => {
+    // For creating a new record, retrieve the ID from the response
+    if (!this.isEditMode) {
+      this.modelId = response?.id; // Ensure your backend includes the generated ID in the response
+    }
+
+
+    
+    // Navigate to the Labeling page with the model ID
+    if (this.modelId) {
+      this.router.navigate(['/model-dashboard/labeling', this.modelId]);
+    } else {
+      console.error('Model ID is missing. Navigation aborted.');
+    }
+  },
+  (error) => {
+    console.error('Error submitting model:', error);
+    alert('An error occurred while submitting the model.');
+  }
+);
   }
 }
