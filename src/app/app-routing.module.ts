@@ -76,6 +76,11 @@ const routes: Routes = [
         path: 'model-dashboard/model-selection/:id',
         loadComponent: () =>
           import('./demo/aimodel/model-selection/model-selection.component').then((m) => m.ModelSelectionComponent)
+      },
+      {
+        path: 'model-dashboard/model-confirmation/:id',
+        loadComponent: () =>
+          import('./demo/aimodel/model-confirmation/model-confirmation.component').then((m) => m.ModelConfirmationComponent)
       }
     ]
   },

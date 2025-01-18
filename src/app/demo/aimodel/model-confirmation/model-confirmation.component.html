@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="Model Confirmation">
+        <div class="model-confirmation-container">
+  
+          <!-- Model General Info -->
+          <div class="mb-4">
+            <h4>General Information</h4>
+            <ul>
+              <li><strong>Model Name:</strong> {{ modelConfig.model_name || 'N/A' }}</li>
+              <li><strong>Coin Symbol:</strong> {{ modelConfig.coin_symbol || 'N/A' }}</li>
+              <li><strong>Training Dataset:</strong> {{ modelConfig.training_dataset_name || 'N/A' }}</li>
+              <li>
+                <strong>Training Dataset Config:</strong>
+                <pre>{{ modelConfig.training_dataset_config | json }}</pre>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Technical Indicators (TA) -->
+          <div class="mb-4">
+            <h4>Technical Indicators</h4>
+            <ul>
+              <li *ngFor="let indicator of modelConfig.features_config?.indicators">
+                <strong>{{ indicator.name }}</strong>
+                <pre>{{ indicator.params | json }}</pre>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Labeling Configuration -->
+          <div class="mb-4">
+            <h4>Labeling Configuration</h4>
+            <ul>
+              <li><strong>method:</strong> {{ modelConfig.label_config?.method || 'N/A' }}</li>
+              <li>
+                <strong>Parameters:</strong>
+                <pre>{{ modelConfig.label_config?.params | json }}</pre>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Model Configuration -->
+          <div class="mb-4">
+            <h4>Model Configuration</h4>
+            <ul>
+              <li><strong>Method:</strong> {{ modelConfig.model_config?.method || 'N/A' }}</li>
+              <li>
+                <strong>Parameters:</strong>
+                <pre>{{ modelConfig.model_config?.params | json }}</pre>
+              </li>
+            </ul>
+          </div>
+  
+          <!-- Buttons -->
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>
+            <button class="btn btn-success" (click)="confirmModelCreation()">Confirm & Create</button>
+          </div>
+        </div>
+      </app-card>
+    </div>
+  </div>
+  

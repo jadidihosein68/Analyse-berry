@@ -88,7 +88,7 @@ export class ModelSelectionComponent implements OnInit {
     this.http.patch(apiUrl, payload).subscribe(
       () => {
         alert('Model configuration updated successfully!');
-        this.router.navigate(['/model-dashboard', { id: this.modelId }]);
+        this.router.navigate(['/model-dashboard/model-confirmation', this.modelId ]);
       },
       (error) => {
         console.error('Error updating model config:', error);
