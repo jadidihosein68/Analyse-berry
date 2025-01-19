@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
   standalone: true,
   imports: [CommonModule, FormsModule, SharedModule, HttpClientModule],
   templateUrl: './model-selection.component.html',
-  styleUrls: ['./model-selection.component.scss']
+  styleUrls: ['./model-selection.component.scss'],
 })
 export class ModelSelectionComponent implements OnInit {
   models = MODEL; // Models data
@@ -78,17 +78,21 @@ export class ModelSelectionComponent implements OnInit {
     const selectedModel = this.models[this.selectedModelIndex];
     const apiUrl = `${environment.apiBaseUrl}/api/model_config/${this.modelId}/model`;
 
+    const params = selectedModel.parameters.map((param: any) => ({
+      [param.name]: param.userValue || param.defaultValue,
+    }));
+
     const payload = {
       model_config: {
         method: selectedModel.modelKey,
-        params: selectedModel.parameters
-      }
+        params,
+      },
     };
 
     this.http.patch(apiUrl, payload).subscribe(
       () => {
         alert('Model configuration updated successfully!');
-        this.router.navigate(['/model-dashboard/model-confirmation', this.modelId ]);
+        this.router.navigate(['/model-dashboard/model-confirmation', this.modelId]);
       },
       (error) => {
         console.error('Error updating model config:', error);
