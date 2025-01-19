@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -6,10 +6,10 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { FEATURES } from 'src/app/constants/model-config.constants';
-import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-model-config',
+  standalone: true,
   imports: [CommonModule, SharedModule, HttpClientModule],
   templateUrl: './model-config.component.html',
   styleUrls: ['./model-config.component.scss'],
@@ -20,14 +20,15 @@ export class ModelConfigComponent implements OnInit {
   coinSymbol: string = '';
 
   // Data Selection
-  trainingDataOptions: string[] = ['Dataset 1', 'Dataset 2', 'Dataset 3'];
+  trainingDataOptions: any[] = []; // Array to hold dataset options
   selectedTrainingData: string = '';
+  trainingDatasetConfig: any = {}; // Stores the selected dataset configuration
 
   // Features with toggle and parameters
   features = FEATURES.map((feature) => ({
     ...feature,
     selected: false,
-    parameters: { ...feature.parameters }, // Clone to avoid mutating the original object
+    parameters: { ...feature.parameters },
   }));
 
   // Parameter Explanations
@@ -56,7 +57,7 @@ export class ModelConfigComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef // For manual change detection
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +69,9 @@ export class ModelConfigComponent implements OnInit {
         this.loadModelData();
       }
     });
+
+    // Load training dataset options from the API
+    this.loadTrainingDataOptions();
   }
 
   /**
@@ -77,11 +81,43 @@ export class ModelConfigComponent implements OnInit {
     this.modelName = '';
     this.coinSymbol = '';
     this.selectedTrainingData = '';
+    this.trainingDatasetConfig = {};
     this.features = FEATURES.map((feature) => ({
       ...feature,
       selected: false,
       parameters: { ...feature.parameters },
     }));
+  }
+
+  /**
+   * Load training dataset options from the API
+   */
+  loadTrainingDataOptions(): void {
+    const apiUrl = 'http://127.0.0.1:5000/api/data_collections';
+    this.http.get<any[]>(apiUrl).subscribe(
+      (data) => {
+        this.trainingDataOptions = data.map((dataset) => ({
+          name: dataset.name_of_dataset,
+          config: dataset,
+        }));
+      },
+      (error) => {
+        console.error('Error loading training data options:', error);
+        alert('Failed to load training data options.');
+      }
+    );
+  }
+
+  /**
+   * Update training dataset configuration when a new dataset is selected
+   */
+  onTrainingDataChange(): void {
+    const selectedOption = this.trainingDataOptions.find(
+      (option) => option.name === this.selectedTrainingData
+    );
+    if (selectedOption) {
+      this.trainingDatasetConfig = selectedOption.config;
+    }
   }
 
   /**
@@ -94,6 +130,7 @@ export class ModelConfigComponent implements OnInit {
         this.modelName = data.model_name;
         this.coinSymbol = data.coin_symbol;
         this.selectedTrainingData = data.training_dataset_name;
+        this.trainingDatasetConfig = data.training_dataset_config || {};
 
         this.features.forEach((feature) => {
           const matchedFeature = data.features_config.indicators.find(
@@ -115,20 +152,6 @@ export class ModelConfigComponent implements OnInit {
   }
 
   /**
-   * Get explanation for parameter
-   */
-  getParameterInfo(paramKey: string): string {
-    return this.parameterInfo[paramKey] || 'No information available.';
-  }
-
-  /**
-   * Navigate back
-   */
-  goBack(): void {
-    this.router.navigate(['/model-dashboard']);
-  }
-
-  /**
    * Submit form
    */
   onSubmit(): void {
@@ -141,22 +164,11 @@ export class ModelConfigComponent implements OnInit {
         })),
     };
 
-    const trainingDatasetConfig = {
-      dataset_type: 'Training',
-      enddate: 1735185599999,
-      id: 1,
-      interval: '5m',
-      name_of_dataset: this.selectedTrainingData,
-      startdate: 1735184699999,
-      symbol: this.coinSymbol,
-      total_records: 4,
-    };
-
     const payload = {
       model_name: this.modelName,
       coin_symbol: this.coinSymbol,
       training_dataset_name: this.selectedTrainingData,
-      training_dataset_config: trainingDatasetConfig,
+      training_dataset_config: this.trainingDatasetConfig,
       features_config: featuresConfig,
     };
 
@@ -183,5 +195,13 @@ export class ModelConfigComponent implements OnInit {
         alert('An error occurred while submitting the model.');
       }
     );
+  }
+
+  goBack(): void {
+    this.router.navigate(['/model-dashboard']);
+  }
+
+  getParameterInfo(paramKey: string): string {
+    return this.parameterInfo[paramKey] || 'No information available.';
   }
 }

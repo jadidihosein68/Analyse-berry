@@ -39,9 +39,10 @@
                 id="trainingData"
                 class="form-select"
                 [(ngModel)]="selectedTrainingData"
+                (change)="onTrainingDataChange()"
               >
-                <option *ngFor="let data of trainingDataOptions" [value]="data">
-                  {{ data }}
+                <option *ngFor="let data of trainingDataOptions" [value]="data.name">
+                  {{ data.name }}
                 </option>
               </select>
             </div>
@@ -95,10 +96,7 @@
         <!-- Buttons -->
         <div class="d-flex justify-content-end">
           <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>
-          <button
-            class="btn btn-success"
-            (click)="onSubmit()"
-          >
+          <button class="btn btn-success" (click)="onSubmit()">
             {{ isEditMode ? 'Update Model' : 'Create Model' }}
           </button>
         </div>
