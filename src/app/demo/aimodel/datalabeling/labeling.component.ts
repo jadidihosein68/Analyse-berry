@@ -26,7 +26,7 @@ export class LabelingComponent implements OnInit {
         threshold_type: 'percent',
       },
       description:
-        "Think of this like guessing if tomorrow you'll be taller than today. We look at the price after a certain time (24 hours here). If it goes up more than 1%, we call it 'up'; if it doesn't, we call it 'down'.",
+        "Think of this like guessing if tomorrow you'll be taller than today. We look at the price after a certain time (24 hours here). If it goes up more than 1%, we call it 'up'; if it doesn't, we call it 'down'. Very common in intraday or short-term crypto trading strategies. Crypto’s volatility means next-step classification often needs tight thresholds and frequent updates.",
     },
     {
       name: 'Multi-Class Trend Labeling',
@@ -36,7 +36,7 @@ export class LabelingComponent implements OnInit {
         bin_labels: ['big drop', 'small drop', 'no change', 'small rise', 'big rise'],
       },
       description:
-        "Imagine sorting different sizes of candy into boxes: small, medium, large. Here we sort price changes into groups like 'big drop', 'small drop', 'no change', 'small rise', and 'big rise'.",
+        "Imagine sorting different sizes of candy into boxes: small, medium, large. Here we sort price changes into groups like 'big drop', 'small drop', 'no change', 'small rise', and 'big rise'.Useful if you believe the magnitude of trends matters significantly (common in crypto due to high volatility). Multi-class labeling can capture more nuanced market shifts than simple up/down.",
     },
     {
       name: 'Triple-Barrier Labeling',
@@ -46,7 +46,7 @@ export class LabelingComponent implements OnInit {
         maxTime: 24,
       },
       description:
-        "Picture placing two fences around a bouncing ball—one above and one below. If the ball crosses the top fence first, it's a 'win'; if it crosses the bottom fence, it's a 'loss'; if it doesn't hit either fence in time, it's a 'draw'.",
+        "Picture placing two fences around a bouncing ball—one above and one below. If the ball crosses the top fence first, it's a 'win'; if it crosses the bottom fence, it's a 'loss'; if it doesn't hit either fence in time, it's a 'draw'. Very valid in crypto algo trading, as it neatly defines the outcome of a trade in a volatile environment. Ensures you systematically capture both upward and downward price swings plus the effect of time constraints (e.g., if the market is flat).",
     },
     {
       name: 'Regression on Future Returns',
