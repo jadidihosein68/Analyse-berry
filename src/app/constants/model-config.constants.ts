@@ -54,13 +54,52 @@ export const FEATURES = [
   
   export const STRATEGIES = [
     {
-      name: 'Default strategy',
-      explanation: 'Suitable for simple scenarios.',
+      name: 'Next-Step Classification',
+      parameters: {
+        horizon: 24,
+        threshold: 0.01,
+        threshold_type: 'percent',
+      },
+      description:
+        "Think of this like guessing if tomorrow you'll be taller than today. We look at the price after a certain time (24 hours here). If it goes up more than 1%, we call it 'up'; if it doesn't, we call it 'down'. Very common in intraday or short-term crypto trading strategies. Crypto’s volatility means next-step classification often needs tight thresholds and frequent updates.",
     },
     {
-      name: 'Signal from majority',
-      explanation:
-        'If the majority of technical indicators raise a flag, the system will follow that signal to label. If we reach a 50% scenario on buy and 50% sell, it will be a hold signal.',
+      name: 'Multi-Class Trend Labeling',
+      parameters: {
+        timeHorizon: 24,
+        bins: [-0.02, -0.01, 0, 0.01, 0.02],
+        bin_labels: ['big drop', 'small drop', 'no change', 'small rise', 'big rise'],
+      },
+      description:
+        "Imagine sorting different sizes of candy into boxes: small, medium, large. Here we sort price changes into groups like 'big drop', 'small drop', 'no change', 'small rise', and 'big rise'.Useful if you believe the magnitude of trends matters significantly (common in crypto due to high volatility). Multi-class labeling can capture more nuanced market shifts than simple up/down.",
+    },
+    {
+      name: 'Triple-Barrier Labeling',
+      parameters: {
+        upper_barrier: 0.02,
+        lower_barrier: 0.02,
+        maxTime: 24,
+      },
+      description:
+        "Picture placing two fences around a bouncing ball—one above and one below. If the ball crosses the top fence first, it's a 'win'; if it crosses the bottom fence, it's a 'loss'; if it doesn't hit either fence in time, it's a 'draw'. Very valid in crypto algo trading, as it neatly defines the outcome of a trade in a volatile environment. Ensures you systematically capture both upward and downward price swings plus the effect of time constraints (e.g., if the market is flat).",
+    },
+    {
+      name: 'Regression on Future Returns',
+      parameters: {
+        lookahead: 24,
+        target_type: 'percentage',
+      },
+      description:
+        "Think of this as trying to guess exactly how much taller you'll be tomorrow. Instead of just saying 'taller or shorter,' we predict the actual amount of price change.",
+    },
+    {
+      name: 'Event-Based Labeling',
+      parameters: {
+        eventDefinition: ['RSI crosses below 30'],
+        lookahead: 24,
+      },
+      description:
+        "Imagine waiting for a special moment, like a birthday surprise. The event here is when a specific indicator (like RSI < 30) happens. We label times that lead up to the surprise as 'event' and others as 'no event'.",
     },
   ];
   
