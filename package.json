@@ -29,6 +29,7 @@
     "@popperjs/core": "2.11.8",
     "apexcharts": "3.49.2",
     "bootstrap": "5.3.3",
+    "lightweight-charts": "^4.2.2",
     "ng-apexcharts": "1.11.0",
     "ngx-scrollbar": "16.1.1",
     "rxjs": "~7.8.1",
