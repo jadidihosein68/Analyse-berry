@@ -93,14 +93,29 @@
           </div>
         </div>
 
-        <!-- Buttons -->
+        <!-- Buttons Section -->
         <div class="d-flex justify-content-end">
+          <!-- New Test Indicator Button -->
+          <button class="btn btn-info me-2" (click)="toggleTestCard()">
+            Test Indicator
+          </button>
           <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>
           <button class="btn btn-success" (click)="onSubmit()">
             {{ isEditMode ? 'Update Model' : 'Create Model' }}
           </button>
         </div>
+
+        <!-- Test Indicator Card -->
+       
       </div>
     </app-card>
+
+
+
+    <div *ngIf="showTestCard" class="mt-4">
+      <app-test-indicator [modelId]="modelId"></app-test-indicator>
+    </div>
+
+
   </div>
 </div>

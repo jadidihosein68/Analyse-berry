@@ -6,11 +6,12 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { FEATURES } from 'src/app/constants/model-config.constants';
+import { TestIndicatorComponent } from '../model-config/test-indicator/test-indicator.component'; // Import the TestIndicatorComponent
 
 @Component({
   selector: 'app-model-config',
   standalone: true,
-  imports: [CommonModule, SharedModule, HttpClientModule],
+  imports: [CommonModule, SharedModule, HttpClientModule,TestIndicatorComponent],
   templateUrl: './model-config.component.html',
   styleUrls: ['./model-config.component.scss'],
 })
@@ -18,7 +19,9 @@ export class ModelConfigComponent implements OnInit {
   // Model Info
   modelName: string = '';
   coinSymbol: string = '';
-
+  showTestCard: boolean = false; // Track visibility of the Test Indicator card
+  modelId: number | null = null;
+  
   // Data Selection
   trainingDataOptions: any[] = []; // Array to hold dataset options
   selectedTrainingData: string = '';
@@ -51,7 +54,7 @@ export class ModelConfigComponent implements OnInit {
   };
 
   isEditMode: boolean = false; // Determines if we're editing
-  modelId: number | null = null; // ID for edit mode
+
 
   constructor(
     private router: Router,
@@ -87,6 +90,14 @@ export class ModelConfigComponent implements OnInit {
       selected: false,
       parameters: { ...feature.parameters },
     }));
+    this.showTestCard = false; // Reset Test Indicator card visibility
+  }
+
+  /**
+   * Toggle visibility of the Test Indicator card
+   */
+  toggleTestCard(): void {
+    this.showTestCard = !this.showTestCard;
   }
 
   /**

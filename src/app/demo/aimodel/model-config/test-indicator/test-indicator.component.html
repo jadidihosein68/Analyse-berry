@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Test Indicator</h5>
+  
+      <!-- Loading Indicator -->
+      <div *ngIf="isLoading" class="text-center">
+        <p>Loading...</p>
+      </div>
+  
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="text-danger">
+        <p>{{ errorMessage }}</p>
+      </div>
+  
+      <!-- Total Records -->
+      <div *ngIf="totalRecords && !isLoading">
+        <p><strong>Total Records:</strong> {{ totalRecords }}</p>
+      </div>
+  
+      <!-- Chart -->
+      <div *ngIf="chartOptions && !isLoading">
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [xaxis]="chartOptions.xaxis"
+          [title]="chartOptions.title"
+          [dataLabels]="chartOptions.dataLabels"
+          [tooltip]="chartOptions.tooltip"
+          [legend]="chartOptions.legend"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+  
