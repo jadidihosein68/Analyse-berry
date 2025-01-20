@@ -17,17 +17,22 @@
                 (change)="onStrategyChange(strategy)"
               />
             </div>
+
             <!-- Strategy Card -->
             <div class="card flex-grow-1">
               <div class="card-body">
                 <h5 class="card-title mb-2">{{ strategy.name }}</h5>
                 <p class="card-text mb-2">{{ strategy.description }}</p>
 
-                <!-- Parameter Fields -->
+                <!-- Parameter Fields (only show if this strategy is selected) -->
                 <div *ngIf="selectedStrategy === strategy.name">
                   <h6>Parameters:</h6>
+
+                  <!-- Use Angular's keyvalue pipe to iterate over parameter keys -->
                   <div class="row" *ngFor="let param of (strategy.parameters | keyvalue)">
-                    <div class="col-md-6 mb-2">
+                    
+                    <!-- Show a simple text input if parameter is NOT an array -->
+                    <div class="col-md-6 mb-2" *ngIf="!isArray(selectedStrategyParams[param.key])">
                       <label class="form-label">{{ param.key }}</label>
                       <input
                         type="text"
@@ -36,15 +41,58 @@
                         [placeholder]="param.value"
                       />
                     </div>
+
+                    <!-- If the parameter IS an array, show an inline table -->
+                    <div class="col-12 mb-2" *ngIf="isArray(selectedStrategyParams[param.key])">
+                      <label class="form-label">{{ param.key }}</label>
+
+                      <table class="table table-bordered table-sm">
+                        <thead>
+                          <tr>
+                            <th style="width: 60px;">#</th>
+                            <th>Value</th>
+                            <th style="width: 100px;">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of selectedStrategyParams[param.key]; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>
+                              <input
+                                type="text"
+                                class="form-control form-control-sm"
+                                [(ngModel)]="selectedStrategyParams[param.key][i]"
+                              />
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-secondary btn-sm"
+                                (click)="removeArrayItem(param.key, i)"
+                              >
+                                Remove
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <button
+                        class="btn btn-primary btn-sm"
+                        (click)="addArrayItem(param.key)"
+                      >
+                        Add
+                      </button>
+                    </div>
                   </div>
                 </div>
+                <!-- End of Parameter Fields -->
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Buttons -->
+      <!-- Navigation Buttons -->
       <div class="row mt-4">
         <div class="col-12 d-flex justify-content-end">
           <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>

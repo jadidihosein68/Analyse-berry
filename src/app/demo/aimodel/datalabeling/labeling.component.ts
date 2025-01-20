@@ -23,36 +23,36 @@ export class LabelingComponent implements OnInit {
       parameters: {
         horizon: 24,
         threshold: 0.01,
-        threshold_type: 'percent', // New: Define if threshold is percentage or absolute
+        threshold_type: 'percent',
       },
       description:
-    "Think of this like guessing if tomorrow you'll be taller than today. We look at the price after a certain time (24 hours here). If it goes up more than 1%, we call it 'up'; if it doesn't, we call it 'down'.",
+        "Think of this like guessing if tomorrow you'll be taller than today. We look at the price after a certain time (24 hours here). If it goes up more than 1%, we call it 'up'; if it doesn't, we call it 'down'.",
     },
     {
       name: 'Multi-Class Trend Labeling',
       parameters: {
         timeHorizon: 24,
         bins: [-0.02, -0.01, 0, 0.01, 0.02],
-        bin_labels: ['big drop', 'small drop', 'no change', 'small rise', 'big rise'], // Optional: Add labels for bins
+        bin_labels: ['big drop', 'small drop', 'no change', 'small rise', 'big rise'],
       },
       description:
-      "Imagine sorting different sizes of candy into boxes: small, medium, large. Here we sort price changes into groups like 'big drop', 'small drop', 'no change', 'small rise', and 'big rise'.",
+        "Imagine sorting different sizes of candy into boxes: small, medium, large. Here we sort price changes into groups like 'big drop', 'small drop', 'no change', 'small rise', and 'big rise'.",
     },
     {
       name: 'Triple-Barrier Labeling',
       parameters: {
-        upper_barrier: 0.02, // New: Separate upper and lower barriers
+        upper_barrier: 0.02,
         lower_barrier: 0.02,
         maxTime: 24,
       },
       description:
-      "Picture placing two fences around a bouncing ball—one above and one below. If the ball crosses the top fence first, it's a 'win'; if it crosses the bottom fence, it's a 'loss'; if it doesn't hit either fence in time, it's a 'draw'.",
+        "Picture placing two fences around a bouncing ball—one above and one below. If the ball crosses the top fence first, it's a 'win'; if it crosses the bottom fence, it's a 'loss'; if it doesn't hit either fence in time, it's a 'draw'.",
     },
     {
       name: 'Regression on Future Returns',
       parameters: {
         lookahead: 24,
-        target_type: 'percentage', // New: Specify target type (percentage or absolute)
+        target_type: 'percentage',
       },
       description:
         "Think of this as trying to guess exactly how much taller you'll be tomorrow. Instead of just saying 'taller or shorter,' we predict the actual amount of price change.",
@@ -60,15 +60,13 @@ export class LabelingComponent implements OnInit {
     {
       name: 'Event-Based Labeling',
       parameters: {
-        eventDefinition: ['RSI crosses below 30'], // New: Allow multiple or complex events
+        eventDefinition: ['RSI crosses below 30'],
         lookahead: 24,
       },
       description:
-        "Imagine waiting for a special moment, like a birthday surprise. The event here is when a specific indicator " +
-        "(like RSI < 30) happens. We label times that lead up to the surprise as 'event' and others as 'no event'.",
+        "Imagine waiting for a special moment, like a birthday surprise. The event here is when a specific indicator (like RSI < 30) happens. We label times that lead up to the surprise as 'event' and others as 'no event'.",
     },
   ];
-  
 
   modelId: string | null = null; // Model ID from the route
 
@@ -93,10 +91,8 @@ export class LabelingComponent implements OnInit {
     this.http.get<any>(apiUrl).subscribe(
       (data) => {
         const selectedStrategy = this.strategies.find(
-          (strategy) =>
-            strategy.name === data.label_config?.method
+          (strategy) => strategy.name === data.label_config?.method
         );
-
         this.selectedStrategy = selectedStrategy ? selectedStrategy.name : '';
         this.selectedStrategyParams = selectedStrategy
           ? { ...selectedStrategy.parameters }
@@ -117,6 +113,33 @@ export class LabelingComponent implements OnInit {
   }
 
   /**
+   * Helper method to check if a value is an array
+   */
+  isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
+
+  /**
+   * Add a new item to an array parameter
+   */
+  addArrayItem(paramKey: string): void {
+    if (!Array.isArray(this.selectedStrategyParams[paramKey])) {
+      this.selectedStrategyParams[paramKey] = [];
+    }
+    // Add an empty item (could be '' or any default)
+    this.selectedStrategyParams[paramKey].push('');
+  }
+
+  /**
+   * Remove an item from an array parameter at the given index
+   */
+  removeArrayItem(paramKey: string, index: number): void {
+    if (Array.isArray(this.selectedStrategyParams[paramKey])) {
+      this.selectedStrategyParams[paramKey].splice(index, 1);
+    }
+  }
+
+  /**
    * Update label_config and navigate to the Model Selection component
    */
   goNext(): void {
@@ -132,10 +155,7 @@ export class LabelingComponent implements OnInit {
 
       this.http.patch(apiUrl, payload).subscribe(
         () => {
-          this.router.navigate([
-            '/model-dashboard/model-selection',
-            this.modelId,
-          ]);
+          this.router.navigate(['/model-dashboard/model-selection', this.modelId]);
         },
         (error) => {
           console.error('Error updating label config:', error);
