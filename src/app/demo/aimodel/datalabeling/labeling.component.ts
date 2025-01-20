@@ -23,6 +23,15 @@ export class LabelingComponent implements OnInit {
   strategies = STRATEGIES;
 
   modelId: string | null = null; // Model ID from the route
+  testLabelingResult: any = null;
+  
+
+  labelMapping: Record<string, string> = {
+    '1': 'BUY_SIGNAL',
+    '-1': 'SELL_SIGNAL',
+    '0': 'HOLD_SIGNAL',
+  };
+  labelDistributionKeys: string[] = [];
 
   constructor(
     private router: Router,
@@ -131,4 +140,26 @@ export class LabelingComponent implements OnInit {
       console.error('Model ID is missing.');
     }
   }
+
+
+  testLabeling(): void {
+    if (this.modelId) {
+      const apiUrl = `http://localhost:5000/api/model/test_labeling/${this.modelId}`;
+      this.http.post(apiUrl, {}).subscribe(
+        (response: any) => {
+          this.testLabelingResult = response;
+          this.labelDistributionKeys = Object.keys(response.label_distribution);
+        },
+        (error) => {
+          console.error('Error testing labeling:', error);
+          alert('Failed to perform labeling test.');
+        }
+      );
+    } else {
+      alert('Model ID is not available.');
+    }
+  }
+
+
+
 }

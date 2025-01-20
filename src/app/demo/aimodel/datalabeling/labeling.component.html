@@ -95,10 +95,31 @@
       <!-- Navigation Buttons -->
       <div class="row mt-4">
         <div class="col-12 d-flex justify-content-end">
-          <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>
+
+
+          <button class="btn btn-info me-2" (click)="testLabeling()">Test Label </button>
+          <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>         
           <button class="btn btn-success" (click)="goNext()">Next</button>
         </div>
       </div>
     </app-card>
+
+
+
+    <div *ngIf="testLabelingResult" class="card mt-4">
+      <div class="card-body">
+        <h5 class="card-title">Test Labeling Result</h5>
+        <p><strong>Total Records:</strong> {{ testLabelingResult.total_records }}</p>
+        <h6>Label Distribution:</h6>
+        <ul>
+          <li *ngFor="let key of labelDistributionKeys">
+            {{ labelMapping[key] }}: {{ testLabelingResult.label_distribution[key] }}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+
   </div>
 </div>
