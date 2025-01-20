@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgApexchartsModule } from 'ng-apexcharts';
 
 @Component({
   selector: 'app-test-indicator',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, NgApexchartsModule],
+  imports: [CommonModule, SharedModule, HttpClientModule, NgApexchartsModule],
   templateUrl: './test-indicator.component.html',
   styleUrls: ['./test-indicator.component.scss'],
 })
@@ -59,7 +60,7 @@ export class TestIndicatorComponent implements OnInit {
     );
 
     // Exclude unwanted fields ('close_time' and 'open_time') from the chart series
-    const excludedFields = ['time', 'close_time', 'open_time','volume'];
+    const excludedFields = ['time', 'close_time', 'open_time','volume','MACD','PPO','RSI','Signal_Line','Stochastic_D','Stochastic_K','volume','ATR'];
     const series = Object.keys(data[0])
       .filter((key) => !excludedFields.includes(key)) // Exclude unwanted fields
       .map((key) => ({
