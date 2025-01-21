@@ -55,6 +55,11 @@ export const FEATURES = [
   export const STRATEGIES = [
     {
       name: 'Next-Step Classification',
+      parameters_validation: {
+        horizon: 'number',
+        threshold: 'number',
+        threshold_type: 'string',
+      },
       parameters: {
         horizon: 24,
         threshold: 0.01,
@@ -65,6 +70,11 @@ export const FEATURES = [
     },
     {
       name: 'Multi-Class Trend Labeling',
+      parameters_validation: {
+        timeHorizon: 'number',
+        bins: 'array of float',
+        bin_labels: 'array of string',
+      },
       parameters: {
         timeHorizon: 24,
         bins: [-0.02, -0.01, 0, 0.01, 0.02],
@@ -75,6 +85,11 @@ export const FEATURES = [
     },
     {
       name: 'Triple-Barrier Labeling',
+      parameters_validation: {
+        upper_barrier: 'number',
+        lower_barrier: 'number',
+        maxTime: 'number',
+      },
       parameters: {
         upper_barrier: 0.02,
         lower_barrier: 0.02,
@@ -85,22 +100,19 @@ export const FEATURES = [
     },
     {
       name: 'Regression on Future Returns',
+      
+      parameters_validation : {
+        lookahead:'number',
+        target_type :'string'
+      },
+      
       parameters: {
         lookahead: 24,
         target_type: 'percentage',
       },
       description:
         "Think of this as trying to guess exactly how much taller you'll be tomorrow. Instead of just saying 'taller or shorter,' we predict the actual amount of price change.",
-    },
-    {
-      name: 'Event-Based Labeling',
-      parameters: {
-        eventDefinition: ['RSI crosses below 30'],
-        lookahead: 24,
-      },
-      description:
-        "Imagine waiting for a special moment, like a birthday surprise. The event here is when a specific indicator (like RSI < 30) happens. We label times that lead up to the surprise as 'event' and others as 'no event'.",
-    },
+    }
   ];
   
 

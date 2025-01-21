@@ -7,8 +7,6 @@ import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { STRATEGIES } from 'src/app/constants/model-config.constants';
 
-
-
 @Component({
   selector: 'app-labeling',
   standalone: true,
@@ -24,12 +22,11 @@ export class LabelingComponent implements OnInit {
 
   modelId: string | null = null; // Model ID from the route
   testLabelingResult: any = null;
-  
 
   labelMapping: Record<string, string> = {
-    '1': 'BUY_SIGNAL',
-    '-1': 'SELL_SIGNAL',
-    '0': 'HOLD_SIGNAL',
+    '1': 'BUY SIGNAL',
+    '-1': 'SELL SIGNAL',
+    '0': 'HOLD SIGNAL',
   };
   labelDistributionKeys: string[] = [];
 
@@ -56,10 +53,19 @@ export class LabelingComponent implements OnInit {
         const selectedStrategy = this.strategies.find(
           (strategy) => strategy.name === data.label_config?.method
         );
-        this.selectedStrategy = selectedStrategy ? selectedStrategy.name : '';
-        this.selectedStrategyParams = selectedStrategy
-          ? { ...selectedStrategy.parameters }
-          : {};
+  
+        if (selectedStrategy) {
+          this.selectedStrategy = selectedStrategy.name;
+  
+          // Merge backend parameters with default parameters
+          this.selectedStrategyParams = {
+            ...selectedStrategy.parameters,
+            ...data.label_config.params,
+          };
+        } else {
+          this.selectedStrategy = '';
+          this.selectedStrategyParams = {};
+        }
       },
       (error) => {
         console.error('Error loading model data:', error);
@@ -89,7 +95,6 @@ export class LabelingComponent implements OnInit {
     if (!Array.isArray(this.selectedStrategyParams[paramKey])) {
       this.selectedStrategyParams[paramKey] = [];
     }
-    // Add an empty item (could be '' or any default)
     this.selectedStrategyParams[paramKey].push('');
   }
 
@@ -99,6 +104,37 @@ export class LabelingComponent implements OnInit {
   removeArrayItem(paramKey: string, index: number): void {
     if (Array.isArray(this.selectedStrategyParams[paramKey])) {
       this.selectedStrategyParams[paramKey].splice(index, 1);
+    }
+  }
+
+  /**
+   * Validate and enforce the correct data type for a parameter
+   */
+  validateInput(paramKey: string, paramValue: any): void {
+    const strategy = this.strategies.find((s) => s.name === this.selectedStrategy);
+    if (strategy && strategy.parameters_validation[paramKey]) {
+      const expectedType = strategy.parameters_validation[paramKey];
+      this.selectedStrategyParams[paramKey] = this.enforceType(paramValue, expectedType);
+    }
+  }
+
+  /**
+   * Enforce the correct type for a value
+   */
+  enforceType(value: any, type: string): any {
+    if (type.startsWith('array')) {
+      const itemType = type.split(' of ')[1];
+      if (!Array.isArray(value)) return [];
+      return value.map((item) => this.enforceType(item, itemType));
+    }
+
+    switch (type) {
+      case 'number':
+        return isNaN(value) ? null : parseFloat(value);
+      case 'string':
+        return value.toString();
+      default:
+        return value;
     }
   }
 
@@ -141,25 +177,42 @@ export class LabelingComponent implements OnInit {
     }
   }
 
-
   testLabeling(): void {
     if (this.modelId) {
-      const apiUrl = `http://localhost:5000/api/model/test_labeling/${this.modelId}`;
-      this.http.post(apiUrl, {}).subscribe(
-        (response: any) => {
-          this.testLabelingResult = response;
-          this.labelDistributionKeys = Object.keys(response.label_distribution);
+      const apiUrl = `${environment.apiBaseUrl}/api/model_config/${this.modelId}/label`;
+
+      const payload = {
+        label_config: {
+          method: this.selectedStrategy,
+          params: this.selectedStrategyParams,
+        },
+      };
+
+      this.http.patch(apiUrl, payload).subscribe(
+        () => {
+          if (this.modelId) {
+            const apiUrl = `http://localhost:5000/api/model/test_labeling/${this.modelId}`;
+            this.http.post(apiUrl, {}).subscribe(
+              (response: any) => {
+                this.testLabelingResult = response;
+                this.labelDistributionKeys = Object.keys(response.label_distribution);
+              },
+              (error) => {
+                console.error('Error testing labeling:', error);
+                alert('Failed to perform labeling test.');
+              }
+            );
+          } else {
+            alert('Model ID is not available.');
+          }
         },
         (error) => {
-          console.error('Error testing labeling:', error);
-          alert('Failed to perform labeling test.');
+          console.error('Error updating label config:', error);
+          alert('Failed to update label config.');
         }
       );
     } else {
-      alert('Model ID is not available.');
+      console.error('Model ID is missing.');
     }
   }
-
-
-
 }
