@@ -1,7 +1,6 @@
 <div class="row">
   <div class="col-sm-12">
     <app-card cardTitle="Labeling">
-      <!-- Strategy Selection -->
       <div class="row mb-3" *ngFor="let strategy of strategies">
         <div class="col-12">
           <div class="d-flex align-items-center">
@@ -17,7 +16,6 @@
                 (change)="onStrategyChange(strategy)"
               />
             </div>
-
             <!-- Strategy Card -->
             <div class="card flex-grow-1">
               <div class="card-body">
@@ -28,24 +26,21 @@
                 <div *ngIf="selectedStrategy === strategy.name">
                   <h6>Parameters:</h6>
 
-                  <!-- Use Angular's keyvalue pipe to iterate over parameter keys -->
                   <div class="row" *ngFor="let param of (strategy.parameters | keyvalue)">
-                    
-                    <!-- Show a simple text input if parameter is NOT an array -->
+                    <!-- Simple Input for Non-Array Parameters -->
                     <div class="col-md-6 mb-2" *ngIf="!isArray(selectedStrategyParams[param.key])">
                       <label class="form-label">{{ param.key }}</label>
                       <input
                         type="text"
                         class="form-control"
                         [(ngModel)]="selectedStrategyParams[param.key]"
-                        [placeholder]="param.value"
+                        (change)="validateInput(param.key, selectedStrategyParams[param.key])"
                       />
                     </div>
 
-                    <!-- If the parameter IS an array, show an inline table -->
+                    <!-- Table for Array Parameters -->
                     <div class="col-12 mb-2" *ngIf="isArray(selectedStrategyParams[param.key])">
                       <label class="form-label">{{ param.key }}</label>
-
                       <table class="table table-bordered table-sm">
                         <thead>
                           <tr>
@@ -62,6 +57,7 @@
                                 type="text"
                                 class="form-control form-control-sm"
                                 [(ngModel)]="selectedStrategyParams[param.key][i]"
+                                (change)="validateInput(param.key, selectedStrategyParams[param.key])"
                               />
                             </td>
                             <td>
@@ -75,12 +71,8 @@
                           </tr>
                         </tbody>
                       </table>
-
-                      <button
-                        class="btn btn-primary btn-sm"
-                        (click)="addArrayItem(param.key)"
-                      >
-                        Add
+                      <button class="btn btn-primary btn-sm" (click)="addArrayItem(param.key)">
+                        Add Item
                       </button>
                     </div>
                   </div>
@@ -95,17 +87,14 @@
       <!-- Navigation Buttons -->
       <div class="row mt-4">
         <div class="col-12 d-flex justify-content-end">
-
-
-          <button class="btn btn-info me-2" (click)="testLabeling()">Test Label </button>
-          <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>         
+          <button class="btn btn-info me-2" (click)="testLabeling()">Test Label</button>
+          <button class="btn btn-secondary me-2" (click)="goBack()">Back</button>
           <button class="btn btn-success" (click)="goNext()">Next</button>
         </div>
       </div>
     </app-card>
 
-
-
+    <!-- Test Labeling Results -->
     <div *ngIf="testLabelingResult" class="card mt-4">
       <div class="card-body">
         <h5 class="card-title">Test Labeling Result</h5>
@@ -113,13 +102,12 @@
         <h6>Label Distribution:</h6>
         <ul>
           <li *ngFor="let key of labelDistributionKeys">
-            {{ labelMapping[key] }}: {{ testLabelingResult.label_distribution[key] }}
+            <ng-container *ngIf="selectedStrategy !== 'Multi-Class Trend Labeling'">
+              {{ labelMapping[key] }}: {{ testLabelingResult.label_distribution[key] }}
+            </ng-container>
           </li>
         </ul>
       </div>
     </div>
-
-
-
   </div>
 </div>
