@@ -7,11 +7,12 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { MODEL } from 'src/app/constants/model-config.constants';
 import { HttpClientModule } from '@angular/common/http';
+import { TestModelComponent } from './test-model/test-model.component'; // Import the TestModelComponent
 
 @Component({
   selector: 'app-model-selection',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, SharedModule, HttpClientModule,TestModelComponent],
   templateUrl: './model-selection.component.html',
   styleUrls: ['./model-selection.component.scss'],
 })
@@ -20,6 +21,7 @@ export class ModelSelectionComponent implements OnInit {
   selectedModelIndex: number | null = null; // Holds index of the selected model card
   modelId: string | null = null; // ID of the current model from the route
   currentModelConfig: any = {}; // Holds the current model configuration
+  isTestModelVisible: boolean = false; // Toggles visibility of TestModelComponent
 
   constructor(
     private router: Router,
@@ -34,9 +36,6 @@ export class ModelSelectionComponent implements OnInit {
     }
   }
 
-  /**
-   * Load the model configuration using the API.
-   */
   loadModelConfig(): void {
     const apiUrl = `${environment.apiBaseUrl}/api/model_config/${this.modelId}`;
     this.http.get<any>(apiUrl).subscribe(
@@ -55,9 +54,6 @@ export class ModelSelectionComponent implements OnInit {
             (model) => model.modelKey === 'RandomForestClassifier'
           );
         }
-
-        console.log('Loaded model config:', this.currentModelConfig);
-        console.log('Auto-selected model index:', this.selectedModelIndex);
       },
       (error) => {
         console.error('Error loading model config:', error);
@@ -66,9 +62,6 @@ export class ModelSelectionComponent implements OnInit {
     );
   }
 
-  /**
-   * Called when user clicks "Next" or "Submit".
-   */
   onSubmitSelection(): void {
     if (this.selectedModelIndex === null) {
       alert('Please select a model before proceeding.');
@@ -101,14 +94,19 @@ export class ModelSelectionComponent implements OnInit {
     );
   }
 
-  /**
-   * Navigate back to the Labeling component with the current model ID.
-   */
   goBack(): void {
     if (this.modelId) {
       this.router.navigate(['/model-dashboard/labeling', this.modelId]);
     } else {
       console.error('Model ID is missing.');
     }
+  }
+
+  showTestModel(): void {
+    this.isTestModelVisible = true;
+  }
+
+  closeTestModel(): void {
+    this.isTestModelVisible = false;
   }
 }

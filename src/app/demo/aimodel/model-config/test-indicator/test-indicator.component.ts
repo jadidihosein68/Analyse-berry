@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-test-indicator',
@@ -32,7 +33,9 @@ export class TestIndicatorComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = null;
 
-    const apiUrl = `http://localhost:5000/api/model/test_indicator/${modelId}`;
+
+
+    const apiUrl = `${environment.apiBaseUrl}/api/model/test_indicator/${modelId}`;
     const payload = {};
 
     this.http.post(apiUrl, payload).subscribe(
