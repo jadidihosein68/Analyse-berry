@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { SharedModule } from 'src/app/theme/shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-test-model',
@@ -16,35 +17,43 @@ imports: [CommonModule,  SharedModule, HttpClientModule,NgApexchartsModule],
 export class TestModelComponent implements OnInit {
     @Input() modelId!: string;
     testModelResult: any = null;
-    heatmapChartOptions: any;
-    heatmapSeries: any;
+    //heatmapChartOptions: any;
+    heatmapChartOptions: ApexOptions | null = null; // Chart configuration options
+    heatmapSeries: any[]=[];
+    isLoading = true; // To handle loading state
+    errorMessage: string | null = null; // To handle API errors
   
     ngOnInit(): void {
       // Initialize API call or mock data for testing
       this.loadTestModelData();
     }
+
+    constructor(private http: HttpClient) {}
   
-    loadTestModelData() {
-      // Simulated API response
-      this.testModelResult = {
-        model_metrics: {
-          classification_report: {
-            '-1': { precision: 0.8, recall: 0.9, 'f1-score': 0.85 },
-            '0': { precision: 0.95, recall: 0.98, 'f1-score': 0.96 },
-            '1': { precision: 0.7, recall: 0.8, 'f1-score': 0.75 },
-          },
+    loadTestModelData(): void {
+      const apiUrl = `${environment.apiBaseUrl}/api/model/build/${this.modelId}`;
+      this.http.post(apiUrl, {}).subscribe(
+        (response: any) => {
+          this.isLoading = false;
+          this.testModelResult = response.data;
+  
+          // Initialize chart options and series
+          this.heatmapChartOptions = this.getHeatmapOptions();
+          this.heatmapSeries = this.getHeatmapSeries();
         },
-      };
-  
-      this.heatmapChartOptions = this.getHeatmapOptions();
-      this.heatmapSeries = this.getHeatmapSeries();
+        (error) => {
+          this.isLoading = false;
+          this.errorMessage = 'Failed to load test model data.';
+          console.error('Error fetching test model data:', error);
+        }
+      );
     }
   
     objectKeys(obj: any): string[] {
       return Object.keys(obj);
     }
   
-    getHeatmapOptions() {
+    getHeatmapOptions(): ApexOptions {
       return {
         chart: { type: 'heatmap', height: 350 },
         dataLabels: { enabled: false },
@@ -54,11 +63,14 @@ export class TestModelComponent implements OnInit {
       };
     }
   
-    getHeatmapSeries() {
+    getHeatmapSeries(): any[] {
+      const confusionMatrix = this.testModelResult.confusion_matrix || [];
       return [
-        { name: 'Actual -1', data: [9, 3, 0] },
-        { name: 'Actual 0', data: [0, 174, 0] },
-        { name: 'Actual 1', data: [0, 1, 2] },
+        { name: '-1', data: confusionMatrix[0] },
+        { name: '0', data: confusionMatrix[1] },
+        { name: '1', data: confusionMatrix[2] },
       ];
     }
+    
+
   }
