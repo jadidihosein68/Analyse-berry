@@ -1,54 +1,82 @@
+
 <div class="card">
-  <div class="card-header">
-    <h5>Test Model</h5>
+<div class="card-header">
+  <h5>Test Model</h5>
+</div>
+
+<div class="card-body">
+
+
+
+  
+  <!-- Loading Indicator -->
+  <div *ngIf="isLoading" class="text-center">
+    <p>Loading...</p>
   </div>
-  <div class="card-body">
-    <!-- Loading Indicator -->
-    <div *ngIf="isLoading" class="text-center">
-      <p>Loading...</p>
-    </div>
 
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="alert alert-danger">
-      {{ errorMessage }}
-    </div>
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
 
-    <!-- Classification Report -->
-    <div *ngIf="!isLoading && testModelResult?.model_metrics?.classification_report" class="classification-report">
-      <h6>Classification Report</h6>
-      <table class="table table-striped">
+  <!-- Data Summary -->
+  <div *ngIf="!isLoading && testModelResult?.data_summary" class="data-summary">
+    <h6>Data Summary</h6>
+    <div *ngFor="let key of objectKeys(testModelResult?.data_summary)" class="data-summary-section">
+      <h6>{{ formatKey(key) }}</h6>
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th>Label</th>
-            <th>Precision</th>
-            <th>Recall</th>
-            <th>F1-Score</th>
-            <th>Support</th>
+            <th>Value</th>
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let label of objectKeys(testModelResult?.model_metrics?.classification_report)"
-          >
+          <tr *ngFor="let label of objectKeys(testModelResult?.data_summary[key])">
             <td>{{ label }}</td>
-            <td>{{ testModelResult?.model_metrics?.classification_report[label]?.precision }}</td>
-            <td>{{ testModelResult?.model_metrics?.classification_report[label]?.recall }}</td>
-            <td>{{ testModelResult?.model_metrics?.classification_report[label]?.['f1-score'] }}</td>
-            <td>{{ testModelResult?.model_metrics?.classification_report[label]?.support }}</td>
+            <td>{{ testModelResult?.data_summary[key][label] }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <!-- Heatmap Chart -->
-    <apx-chart
-      *ngIf="!isLoading && heatmapChartOptions"
-      [series]="heatmapSeries"
-      [chart]="heatmapChartOptions.chart"
-      [xaxis]="heatmapChartOptions.xaxis"
-      [yaxis]="heatmapChartOptions.yaxis"
-      [dataLabels]="heatmapChartOptions.dataLabels"
-      [colors]="heatmapChartOptions.colors"
-    ></apx-chart>
   </div>
+
+  <!-- Classification Report -->
+  <div *ngIf="!isLoading && testModelResult?.model_metrics?.classification_report" class="classification-report">
+    <h6>Classification Report</h6>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>Precision</th>
+          <th>Recall</th>
+          <th>F1-Score</th>
+          <th>Support</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let label of objectKeys(testModelResult?.model_metrics?.classification_report)"
+        >
+          <td>{{ label }}</td>
+          <td>{{ testModelResult?.model_metrics?.classification_report[label]?.precision }}</td>
+          <td>{{ testModelResult?.model_metrics?.classification_report[label]?.recall }}</td>
+          <td>{{ testModelResult?.model_metrics?.classification_report[label]?.['f1-score'] }}</td>
+          <td>{{ testModelResult?.model_metrics?.classification_report[label]?.support }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Heatmap Chart -->
+  <apx-chart
+    *ngIf="!isLoading && heatmapChartOptions"
+    [series]="heatmapSeries"
+    [chart]="heatmapChartOptions.chart"
+    [xaxis]="heatmapChartOptions.xaxis"
+    [yaxis]="heatmapChartOptions.yaxis"
+    [dataLabels]="heatmapChartOptions.dataLabels"
+    [colors]="heatmapChartOptions.colors"
+  ></apx-chart>
+</div>
 </div>

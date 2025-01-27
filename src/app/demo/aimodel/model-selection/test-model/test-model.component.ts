@@ -21,7 +21,8 @@ export class TestModelComponent implements OnInit {
       classification_report: {},
     },
     confusion_matrix: [],
-  }; // Default structure for testModelResult
+    data_summary: {}, // Add default structure for data_summary
+  }; 
   heatmapChartOptions: ApexOptions | null = null; // Chart configuration options
   heatmapSeries: any[] = [];
   isLoading = true; // To handle loading state
@@ -41,7 +42,8 @@ export class TestModelComponent implements OnInit {
         this.testModelResult = response?.data || {
           model_metrics: { classification_report: {} },
           confusion_matrix: [],
-        }; // Handle empty response gracefully
+          data_summary: {}, // Handle empty data_summary gracefully
+        };
 
         this.heatmapChartOptions = this.getHeatmapOptions();
         this.heatmapSeries = this.getHeatmapSeries();
@@ -76,4 +78,14 @@ export class TestModelComponent implements OnInit {
       { name: '1', data: confusionMatrix[2] || [] },
     ];
   }
+
+
+  formatKey(key: string): string {
+    // Convert snake_case or camelCase to readable Title Case
+    return key
+      .replace(/_/g, ' ') // Replace underscores with spaces
+      .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
+  }
+
+  
 }
