@@ -3,8 +3,18 @@
     <h5>Test Model</h5>
   </div>
   <div class="card-body">
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="text-center">
+      <p>Loading...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
     <!-- Classification Report -->
-    <div class="classification-report">
+    <div *ngIf="!isLoading && testModelResult?.model_metrics?.classification_report" class="classification-report">
       <h6>Classification Report</h6>
       <table class="table table-striped">
         <thead>
@@ -17,19 +27,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let label of objectKeys(testModelResult.model_metrics.classification_report)">
+          <tr
+            *ngFor="let label of objectKeys(testModelResult?.model_metrics?.classification_report)"
+          >
             <td>{{ label }}</td>
-            <td>{{ testModelResult.model_metrics.classification_report[label].precision }}</td>
-            <td>{{ testModelResult.model_metrics.classification_report[label].recall }}</td>
-            <td>{{ testModelResult.model_metrics.classification_report[label]['f1-score'] }}</td>
-            <td>{{ testModelResult.model_metrics.classification_report[label]['support'] }}</td>
+            <td>{{ testModelResult?.model_metrics?.classification_report[label]?.precision }}</td>
+            <td>{{ testModelResult?.model_metrics?.classification_report[label]?.recall }}</td>
+            <td>{{ testModelResult?.model_metrics?.classification_report[label]?.['f1-score'] }}</td>
+            <td>{{ testModelResult?.model_metrics?.classification_report[label]?.support }}</td>
           </tr>
         </tbody>
       </table>
     </div>
+
     <!-- Heatmap Chart -->
     <apx-chart
-      *ngIf="heatmapChartOptions"
+      *ngIf="!isLoading && heatmapChartOptions"
       [series]="heatmapSeries"
       [chart]="heatmapChartOptions.chart"
       [xaxis]="heatmapChartOptions.xaxis"
